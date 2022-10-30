@@ -4,13 +4,11 @@
  */
 package DAO;
 
-import DAO.HibernateUtil;
 import ENTITES.Article;
 import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+
 
 /**
  *
@@ -24,17 +22,22 @@ public class DAOArticle {
     public static void create(Article article)
     {
         session =HibernateUtil.getSessionFactory().openSession();
+         
         transaction = session.beginTransaction();
         session.save(article);
         transaction.commit();
+       
+      
     }
     
     public static void update(Article article)
     {
         session =HibernateUtil.getSessionFactory().openSession();
         transaction = session.beginTransaction();
-        session.load(Article.class,article.getCode());
-        session.update(article);
+        Article a = session.load(Article.class,article.getCode());
+         a.setDesignation(article.getDesignation());
+        a.setPrix(article.getPrix());
+        session.update(a);
         transaction.commit();
        
     }
